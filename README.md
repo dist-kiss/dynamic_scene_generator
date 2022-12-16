@@ -1,9 +1,7 @@
 # dynamic_scene_generator
 Dynamic generation of scenes in the IVE based on situations of relevance for the ABM
 
-Current status of API based on following Code example: https://github.com/bezkoder/node-express-mongodb
-
-The GitHub Account also has further examples implementing a GUI with Angular, based on this API structure.
+Current status of API based on following Code example: https://github.com/bezkoder/node-express-mongodb (The GitHub Account also has further examples implementing a GUI with Angular, based on this API structure).
 
 # Get Started
 

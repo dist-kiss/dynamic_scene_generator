@@ -8,30 +8,30 @@ myHeaders.append("Content-Type", "application/json");
 myHeaders.append("Authorization", "Bearer secret");
 
 var raw = JSON.stringify({
-    "username": "admin",
-    "password": "pass"
-  });
+  "username": "admin",
+  "password": "pass"
+});
 
-  var requestOptions = {
-    method: 'POST',
-    headers: myHeaders,
-    body: raw,
-    redirect: 'follow'
-  };
+var requestOptions = {
+  method: 'POST',
+  headers: myHeaders,
+  body: raw,
+  redirect: 'follow'
+};
 
 
-  async function getToken() {
-    var token;
-    try {
-      var response = await fetch("http://127.0.0.1:5000/api/login", requestOptions);
-      token = await response.text();
-      console.log(token)
-      return token
-    } catch (e) {
-      // handle error
-      console.error(e)
-    }
+async function getToken() {
+  var token;
+  try {
+    var response = await fetch("http://127.0.0.1:5000/api/login", requestOptions);
+    token = await JSON.parse(await response.text()); 
+    console.log(token);
+    return token
+  } catch (e) {
+    // handle error
+    console.error(e)
   }
-  getToken();
-  module.exports = {getToken};
+}
+
+module.exports = { getToken };
 

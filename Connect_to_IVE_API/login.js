@@ -25,10 +25,7 @@ async function getToken() {
   try {
     var response = await fetch("http://127.0.0.1:5000/api/login", requestOptions);
     token = await JSON.parse(await response.text()); 
-<<<<<<< HEAD
-=======
     console.log(token);
->>>>>>> 5f0977ee5922b7bcaaaa0775f8607dca615fb3aa
     return token
   } catch (e) {
     // handle error

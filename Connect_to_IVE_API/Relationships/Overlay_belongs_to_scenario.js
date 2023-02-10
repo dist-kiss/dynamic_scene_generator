@@ -17,7 +17,7 @@ async function createHeader() {
 
 
 
-async function Belongs_to(raw) {
+async function Overlay_belongs_to_scenario(raw) {
   const header = await createHeader();
 
   var requestOptions = {
@@ -27,11 +27,11 @@ async function Belongs_to(raw) {
     redirect: 'follow'
   };
 
-  return await fetch("http://127.0.0.1:5000/api/relationship/belongs_to/location", requestOptions)
+  return await fetch("http://127.0.0.1:5000/api/relationship/belongs_to/overlay", requestOptions)
   .then(response => response.json())
-  .then(result => {console.log(result)})
+  .then(result => {return (result)})
   .catch(error => console.log('error', error));
 }
 
 
-module.exports = { Belongs_to };
+module.exports = { Overlay_belongs_to_scenario };

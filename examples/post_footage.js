@@ -1,3 +1,14 @@
+const { Create_location } = require("../Connect_to_IVE_API/Locations/Create_location");
+const { get_locations } = require("../Connect_to_IVE_API/Locations/Get_locations");
+const { Get_locations_by_scenario } = require("../Connect_to_IVE_API/Locations/Get_locations_by_scenario");
+const { Location_belongs_to_scenario } = require("../Connect_to_IVE_API/Relationships/Location_belongs_to_scenario");
+const { Get_scenarios } = require("../Connect_to_IVE_API/Scenarios/Get_scenarios");
+const { Create_scenario } = require("../Connect_to_IVE_API/Scenarios/Create_scenario");
+const { Create_video } = require("../Connect_to_IVE_API/Videos/Create_video");
+const { scenario_details } = require("../datastructures");
+const { video_details } = require("../datastructures");
+const { location_details } = require("../datastructures");
+
 async function doPostRequest() {
 
     let url = 'http://localhost:5000/api/footage';
@@ -48,3 +59,11 @@ async function doGetRequest() {
 doGetRequest().then(data => {
     console.log(data);
 });
+
+// Create_location(location_details).then(data => {
+//     console.log(data);
+// })
+
+// Get_location().then(data => {
+//     console.log(data);
+// })

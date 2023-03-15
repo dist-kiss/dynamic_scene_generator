@@ -2,6 +2,9 @@ const { response } = require('express');
 const fetch = require('node-fetch');
 const { type } = require('os');
 const { getToken } = require('../login');
+const { IVE_URL } = require('../../app/config/config');
+
+let ive_path = IVE_URL + "/api/relationship/embedded_in";
 
 
 
@@ -27,7 +30,7 @@ async function Embedded_in(raw) {
     redirect: 'follow'
   };
 
-  return await fetch("http://127.0.0.1:5000/api/relationship/embedded_in", requestOptions)
+  return await fetch(ive_path, requestOptions)
   .then(response => response.json())
   .then(result => {    
     let {overlay_id, video_id} = result;

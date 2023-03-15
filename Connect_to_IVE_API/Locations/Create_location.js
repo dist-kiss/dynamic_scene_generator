@@ -2,6 +2,9 @@ const { response } = require('express');
 const fetch = require('node-fetch');
 const { type } = require('os');
 const { getToken } = require('../login');
+const { IVE_URL } = require('../../app/config/config');
+
+let ive_path = IVE_URL + "/api/locations";
 
 
 
@@ -26,7 +29,7 @@ async function Create_location(raw) {
     redirect: 'follow'
   };
 
-  return await fetch("http://127.0.0.1:5000/api/locations", requestOptions)
+  return await fetch(ive_path, requestOptions)
   .then(response => response.json())
   .then(result => {return result})
   .catch(error => console.log('error', error));

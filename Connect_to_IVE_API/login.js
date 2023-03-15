@@ -1,6 +1,9 @@
 const { response } = require('express');
 const fetch = require('node-fetch');
 const { type } = require('os');
+const { IVE_URL, IVE_USER, IVE_PW } = require('../app/config/config');
+
+let ive_path = IVE_URL + "/api/login";
 
 //login
 var myHeaders = new fetch.Headers();
@@ -8,8 +11,8 @@ myHeaders.append("Content-Type", "application/json");
 myHeaders.append("Authorization", "Bearer secret");
 
 var raw = JSON.stringify({
-  "username": "admin",
-  "password": "pass"
+  "username": IVE_USER,
+  "password": IVE_PW
 });
 
 var requestOptions = {
@@ -23,7 +26,7 @@ var requestOptions = {
 async function getToken() {
   var token;
   try {
-    var response = await fetch("http://127.0.0.1:5000/api/login", requestOptions);
+    var response = await fetch(ive_path, requestOptions);
     token = await JSON.parse(await response.text()); 
     //console.log(token);
     return token

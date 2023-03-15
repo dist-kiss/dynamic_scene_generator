@@ -1,50 +1,50 @@
 var scenario_details = JSON.stringify({
-    "name": "test",
-    "description": "first simulation"
-  });
+  "name": "test envs",
+  "description": "first simulation"
+});
 
 var location_details = JSON.stringify({
-    "name": "Important crossing",
-    "description": "problem",
-    "lat": 999,
-    "lng": 999,
-    "location_type": "outdoor"
+  "name": "Login test",
+  "description": "problem",
+  "lat": 999,
+  "lng": 999,
+  "location_type": "outdoor"
 });
 
 var video_details = JSON.stringify({
-    "name": "Three-way junction",
-    "description": "threeway junction option 1",
-    "url": "/Locations/V1",
-    "recorded": null
-  });
+  "name": "Three-way junction",
+  "description": "threeway junction option 1",
+  "url": "/Locations/V1",
+  "recorded": null
+});
 
-  var embedding_details = JSON.stringify({
-    "overlay_id": "7",
-    "video_id": "22",
-    "x": "0",
-    "y": "0",
-    "z": "0",
-    "description": "stopsign in the Innenstadt video",
-    "rz": "0",
-    "rx": "0",
-    "ry": "0",
-    "h": "2",
-    "w": "3",
-    "display": "true",
-    "d": "0"
-  });
+var embedding_details = JSON.stringify({
+  "overlay_id": "7",
+  "video_id": "22",
+  "x": "0",
+  "y": "0",
+  "z": "0",
+  "description": "stopsign in the Innenstadt video",
+  "rz": "0",
+  "rx": "0",
+  "ry": "0",
+  "h": "2",
+  "w": "3",
+  "display": "true",
+  "d": "0"
+});
 
-  var recorded_at_details = JSON.stringify({
-    "location_id": "24",
-    "video_id": "22",
-    "description": "test",
-    "preferred": "yes"
-  });
-
-
+var recorded_at_details = JSON.stringify({
+  "location_id": "24",
+  "video_id": "22",
+  "description": "test",
+  "preferred": "yes"
+});
 
 
 
 
 
-  module.exports = {scenario_details, location_details, video_details, embedding_details, recorded_at_details}
+
+
+module.exports = { scenario_details, location_details, video_details, embedding_details, recorded_at_details }

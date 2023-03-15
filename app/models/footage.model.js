@@ -1,5 +1,5 @@
 module.exports = mongoose => {
-    const dist_ov_ankerpoints = mongoose.Schema({
+    const ankerpoint = mongoose.Schema({
         direction: {type: Number, min: 1, max: 5, required: true},
         screen_coordinate: {
             x: {type: Number, required: true, min: 0, max: 1080},
@@ -9,16 +9,19 @@ module.exports = mongoose => {
     
     const footage_schema = mongoose.Schema({
         // _id: mongoose.Schema.Types.ObjectId,
-        // name: String,
         name: {type: String, required:true},
         video: {type: String, required:true},
         degree: {type: Number, required: true},
-        distance_overlays: [dist_ov_ankerpoints]
+        // TODO: limit number of ankerpoints per overlay type to degree; where is this possible, here or in ankerpoint Schema?
+        distance_overlays: [ankerpoint],
+        sign_overlays: [ankerpoint],
+        crowd_overlays: [ankerpoint]
     })
   
     const Footage = mongoose.model("footage", footage_schema);
     return Footage;
 };
+
 
 /* 
 

@@ -14,10 +14,17 @@ exports.create = (req, res) => {
     name: req.body.name,
     video: req.body.video,
     degree: req.body.degree,
-    // distance_overlays: req.body.distance_overlays // TODO: does it work like this or need to split up and check for coordinates etc.?
-    })
+    distance_overlays: req.body.distance_overlays, // TODO: does it work like this or need to split up and check for coordinates etc.?
+    sign_overlays: req.body.sign_overlays,
+    crowd_overlays: req.body.crowd_overlays
+  })
+
+  // footage.crowd_overlays[0].direction = 2
+
+  console.log(footage);
 
   // Save footage in the database
+  // TODO: check if error occurs for wrong format (check) and if the message is helpful (no)
   footage
     .save(footage)
     .then(data => {
@@ -27,6 +34,7 @@ exports.create = (req, res) => {
       res.status(500).send({
         message:
           err.message || "Some error occurred while creating the footage."
+          // TODO: display error message somewhere; does not appear e.g. when posting data with anchorpoint direction > 3 (throws an error but not the message)
       });
     });
 };

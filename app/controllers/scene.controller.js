@@ -15,11 +15,14 @@ exports.create = async (req, res) => {
     scenario_name: req.body.scenario_name,
     location_name: req.body.location_name,
     degree: req.body.degree,
-    sign_1: req.body.sign_1,
-    crowd_1: req.body.crowd_1,
-    })
+    signs: req.body.signs,
+    crowds: req.body.crowds,
+    distances: req.body.distances
+  })
+
+  console.log(scene);
   // Generate IVE request for Scene
- await generate(scene);
+  //  await generate(scene);
 
 
   // Save scene in the database

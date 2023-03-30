@@ -16,17 +16,14 @@ const { Overlay_belongs_to_scenario } = require('./Connect_to_IVE_API/Relationsh
 
 
 // This is the data that will come from the model
-async function main() {
+async function generate(obj) {  
+
 let data = {
-    "Scenario_name" : "SCENARIO1",
-    "Location_name" : "LOCATION4",
-    "degree" : 2,
-    "Sign_1" : "Stop",
-    "Sign_2" : "Go",
-    //"Sign_3" : "Stop",
-    "Crowd_1" : "2",
-    "Crowd_2" : "1",
-    //"Crowd_3" : "2"
+    "Scenario_name" : obj.scenario_name,
+    "Location_name" : obj.location_name,
+    "degree" : obj.degree,
+    "Sign_1" : obj.sign_1,
+    "Crowd_1" : obj.crowd_1
 }
 
 let Keywords = [
@@ -168,4 +165,4 @@ for(let i =1; i <= data.degree; i++){
 
 }
   
-main();
+module.exports = { generate };

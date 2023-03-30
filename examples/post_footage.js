@@ -8,22 +8,23 @@ const { Create_video } = require("../Connect_to_IVE_API/Videos/Create_video");
 const { scenario_details } = require("../datastructures");
 const { video_details } = require("../datastructures");
 const { location_details } = require("../datastructures");
+const {schema_video} = require('./sampledata');
 
 async function doPostRequest() {
 
     let url = 'http://localhost:5000/api/footage';
-    let data = {
-        video: "http://...",
-        name: "valid_test2",
-        degree: 4
-     };
+    // let data = {
+    //     video: "http://...",
+    //     name: "valid_test2",
+    //     degree: 4
+    //  };
 
     let res = await fetch(url, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(schema_video[0]),
     });
 
     if (res.ok) {
@@ -55,8 +56,9 @@ async function doGetRequest() {
     }
 }
 
+// console.log(JSON.stringify(schema_video[0]));
 
-doGetRequest().then(data => {
+doPostRequest().then(data => {
     console.log(data);
 });
 
@@ -67,3 +69,5 @@ doGetRequest().then(data => {
 // Get_location().then(data => {
 //     console.log(data);
 // })
+
+// console.log(schema_video[1]);

@@ -11,6 +11,9 @@ module.exports = app => {
   
     // Retrieve a single Footage with id
     router.get("/:id", footage.findOne);
+
+    // Retrieve all single Footages with degree
+    router.get("/degree/:degree", footage.findByDegree);
   
     // Update a Tutorial with id
     router.put("/:id", footage.update);

@@ -73,6 +73,24 @@ exports.findOne = (req, res) => {
     });
 };
 
+// Find all footages with a common degree value
+exports.findByDegree = (req, res) => {
+  const degree = req.params.degree;
+
+  Footage.find({ degree: degree })
+    .then(data => {
+      if (data.length === 0) {
+        res.status(404).send({ message: "No footages found with degree " + degree });
+      } else {
+        res.send(data);
+      }
+    })
+    .catch(err => {
+      res.status(500).send({ message: "Error retrieving footages with degree " + degree });
+    });
+};
+
+
 // Update a footage by the id in the request
 exports.update = (req, res) => {
   if (!req.body) {

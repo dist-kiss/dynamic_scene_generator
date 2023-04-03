@@ -24,10 +24,35 @@ module.exports = mongoose => {
         name: { type: String, required: [true, 'name of footage missing'] },
         video: { type: String, required: [true, 'video missing; should be a hyperlink'] },
         degree: { type: Number, min: [1, 'degree minimum is 1, got {VALUE}'], max: [3, 'degree maximum is 3, got {VALUE}'], required: [true, 'degree missing; has to be integer in [1..3]'] },
-        // TODO: limit number of ankerpoints per overlay type to degree; where is this possible, here or in ankerpoint Schema and how?
-        distance_overlays: [anchorpoint],
-        sign_overlays: [anchorpoint],
-        crowd_overlays: [anchorpoint]
+        // TODO: Make sure the anchorpoints direktion is unique (maybe)   
+        distance_overlays: {
+            type: [anchorpoint],
+            validate: {
+              validator: function(arr) {
+                return arr.length <= this.degree;
+              },
+              message: 'distance overlays array length  exceeds degree '
+            }
+          },
+          crowd_overlays: {
+            type: [anchorpoint],
+            validate: {
+              validator: function(arr) {
+                return arr.length <= this.degree;
+              },
+              message: 'crowds overlay array length  exceeds degree '
+            }
+          },
+          sign_overlays: {
+            type: [anchorpoint],
+            validate: {
+              validator: function(arr) {
+                return arr.length <= this.degree;
+              },
+              message: 'sign overlays array length  exceeds degree '
+            }
+          },
+    })
     })
 
     const Footage = mongoose.model("footage", footage_schema);

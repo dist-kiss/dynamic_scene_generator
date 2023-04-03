@@ -20,7 +20,6 @@ exports.create = async (req, res) => {
     distances: req.body.distances
   })
 
-  console.log(scene);
   // Generate IVE request for Scene
   //  await generate(scene);
 
@@ -32,6 +31,7 @@ exports.create = async (req, res) => {
       res.send(data);
     })
     .catch(err => {
+      console.log(err.message);
       res.status(500).send({
         message:
           err.message || "Some error occurred while creating the scene."
@@ -42,7 +42,9 @@ exports.create = async (req, res) => {
 // Retrieve all scenes from the database.
 exports.findAll = (req, res) => {
   const name = req.query.name;
-  var condition = name ? { name: { $regex: new RegExp(name), $options: "i" } } : {};
+  const degree = req.query.degree;
+  var condition = name ? { scenario_name: { $regex: new RegExp(name), $options: "i" } } : {};
+  degree ? condition.degree = degree : {};
 
   Scene.find(condition)
     .then(data => {

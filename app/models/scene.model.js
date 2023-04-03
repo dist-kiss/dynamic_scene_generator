@@ -18,8 +18,8 @@ module.exports = mongoose => {
             sign: {
                 type: String,
                 enum: {
-                    values: ['stop', 'go'],
-                    message: '{VALUE} is not supported. Needs to be stop or go'
+                    values: ['stop', 'go', ''],
+                    message: "{VALUE} is not supported. Needs to be stop or go or empty"
                 },
                 required: true
             }

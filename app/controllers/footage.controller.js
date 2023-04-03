@@ -42,7 +42,9 @@ exports.create = (req, res) => {
 // Retrieve all footages from the database.
 exports.findAll = (req, res) => {
   const name = req.query.name;
+  const degree = req.query.degree;
   var condition = name ? { name: { $regex: new RegExp(name), $options: "i" } } : {};
+  degree ? condition.degree = degree : {};
 
   Footage.find(condition)
     .then(data => {

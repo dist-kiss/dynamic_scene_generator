@@ -42,7 +42,9 @@ exports.create = async (req, res) => {
 // Retrieve all scenes from the database.
 exports.findAll = (req, res) => {
   const name = req.query.name;
-  var condition = name ? { name: { $regex: new RegExp(name), $options: "i" } } : {};
+  const degree = req.query.degree;
+  var condition = name ? { scenario_name: { $regex: new RegExp(name), $options: "i" } } : {};
+  degree ? condition.degree = degree : {};
 
   Scene.find(condition)
     .then(data => {

@@ -11,6 +11,8 @@ module.exports = mongoose => {
         },
         degree: {
             type: Number,
+            min: 1,
+            max: 3,
             required: true
         },
         signs: [{

@@ -1,16 +1,10 @@
 module.exports = mongoose => {
     const anchorpoint = mongoose.Schema({
         direction: {
-            type: Number,
-<<<<<<< HEAD
-            min: 1,
-            max: [3, 'direction maximum is 3, got {VALUE}'],
-            required: [true, 'direction missing; has to be integer in [1 ... 3]']
-=======
+            type:
             min: [1, 'direction minimum is 1, got {VALUE}'],
             max: [3, 'direction maximum is 3, got {VALUE}'], // TODO: check if the message is shown
             required: [true, 'direction for anchorpoint missing; has to be integer in [1 ... 3]']
->>>>>>> 989f23e61d3186cd34766b68c3253b5d1dd2f57b
         },
         screen_coordinate: {
             w: { type: Number, required: false, default: 3 }, // width
@@ -27,15 +21,9 @@ module.exports = mongoose => {
 
     const footage_schema = mongoose.Schema({
         // _id: mongoose.Schema.Types.ObjectId,
-<<<<<<< HEAD
-        name: { type: String, required: true },
-        video: { type: String, required: true },
-        degree: { type: Number, required: true },
-=======
         name: { type: String, required: [true, 'name of footage missing'] },
         video: { type: String, required: [true, 'video missing; should be a hyperlink'] },
         degree: { type: Number, min: [1, 'degree minimum is 1, got {VALUE}'], max: [3, 'degree maximum is 3, got {VALUE}'], required: [true, 'degree missing; has to be integer in [1..3]'] },
->>>>>>> 989f23e61d3186cd34766b68c3253b5d1dd2f57b
         // TODO: Make sure the anchorpoints direktion is unique (maybe)   
         distance_overlays: {
             type: [anchorpoint],
@@ -64,10 +52,6 @@ module.exports = mongoose => {
               message: 'sign overlays array length  exceeds degree '
             }
           },
-<<<<<<< HEAD
-=======
-    })
->>>>>>> 989f23e61d3186cd34766b68c3253b5d1dd2f57b
     })
 
     const Footage = mongoose.model("footage", footage_schema);

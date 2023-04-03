@@ -5,7 +5,7 @@ const Footage = db.footages;
 exports.create = (req, res) => {
   // Validate request
   if (!req.body.name) {
-    res.status(400).send({ message: "Content can not be empty!" });
+    res.status(400).send({ message: "name can not be empty!" });
     return;
   }
 
@@ -19,22 +19,17 @@ exports.create = (req, res) => {
     crowd_overlays: req.body.crowd_overlays
   })
 
-  // footage.crowd_overlays[0].direction = 2
-
-  console.log(footage);
-
   // Save footage in the database
-  // TODO: check if error occurs for wrong format (check) and if the message is helpful (no)
   footage
     .save(footage)
     .then(data => {
       res.send(data);
     })
     .catch(err => {
+      console.log(err.message);
       res.status(500).send({
         message:
           err.message || "Some error occurred while creating the footage."
-          // TODO: display error message somewhere; does not appear e.g. when posting data with anchorpoint direction > 3 (throws an error but not the message)
       });
     });
 };

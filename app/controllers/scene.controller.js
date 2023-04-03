@@ -20,7 +20,6 @@ exports.create = async (req, res) => {
     distances: req.body.distances
   })
 
-  console.log(scene);
   // Generate IVE request for Scene
   //  await generate(scene);
 
@@ -32,6 +31,7 @@ exports.create = async (req, res) => {
       res.send(data);
     })
     .catch(err => {
+      console.log(err.message);
       res.status(500).send({
         message:
           err.message || "Some error occurred while creating the scene."

@@ -75,11 +75,13 @@ exports.findByDegree = (req, res) => {
   const degree = req.params.degree;
 
   Footage.find({ degree: degree })
+    .select('_id')
     .then(data => {
       if (data.length === 0) {
         res.status(404).send({ message: "No footages found with degree " + degree });
       } else {
-        res.send(data);
+        const ids = data.map(footage => footage._id);
+        res.send(ids);
       }
     })
     .catch(err => {

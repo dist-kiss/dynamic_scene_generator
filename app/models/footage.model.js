@@ -1,7 +1,7 @@
 module.exports = mongoose => {
     const anchorpoint = mongoose.Schema({
         direction: {
-            type:
+            type: Number,
             min: [1, 'direction minimum is 1, got {VALUE}'],
             max: [3, 'direction maximum is 3, got {VALUE}'], // TODO: check if the message is shown
             required: [true, 'direction for anchorpoint missing; has to be integer in [1 ... 3]']
@@ -28,30 +28,30 @@ module.exports = mongoose => {
         distance_overlays: {
             type: [anchorpoint],
             validate: {
-              validator: function(arr) {
-                return arr.length <= this.degree;
-              },
-              message: 'distance overlays array length  exceeds degree '
+                validator: function (arr) {
+                    return arr.length <= this.degree;
+                },
+                message: 'distance overlays array length  exceeds degree '
             }
-          },
-          crowd_overlays: {
+        },
+        crowd_overlays: {
             type: [anchorpoint],
             validate: {
-              validator: function(arr) {
-                return arr.length <= this.degree;
-              },
-              message: 'crowds overlay array length  exceeds degree '
+                validator: function (arr) {
+                    return arr.length <= this.degree;
+                },
+                message: 'crowds overlay array length  exceeds degree '
             }
-          },
-          sign_overlays: {
+        },
+        sign_overlays: {
             type: [anchorpoint],
             validate: {
-              validator: function(arr) {
-                return arr.length <= this.degree;
-              },
-              message: 'sign overlays array length  exceeds degree '
+                validator: function (arr) {
+                    return arr.length <= this.degree;
+                },
+                message: 'sign overlays array length  exceeds degree '
             }
-          },
+        },
     })
 
     const Footage = mongoose.model("footage", footage_schema);

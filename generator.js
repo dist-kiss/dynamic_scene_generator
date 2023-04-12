@@ -1,3 +1,5 @@
+const db = require("./app/models/index");
+const Footage = db.footages;
 const { response } = require('express');
 const fetch = require('node-fetch');
 const { type } = require('os');
@@ -11,156 +13,171 @@ const { Embedded_in } = require('./Connect_to_IVE_API/Relationships/Embedded_in'
 const { Recorded_at } = require('./Connect_to_IVE_API/Relationships/Recorded_at');
 const { Location_belongs_to_scenario } = require('./Connect_to_IVE_API/Relationships/Location_belongs_to_scenario');
 const { Video_belongs_to_scenario } = require('./Connect_to_IVE_API/Relationships/Video_belongs_to_scenario');
-const videos = require('./videodata');
 const { Overlay_belongs_to_scenario } = require('./Connect_to_IVE_API/Relationships/Overlay_belongs_to_scenario');
 
 
-// This is the data that will come from the model
-async function generate(obj) {  
+// obj is the data object that will come from the model
+async function generate(data) {  
 
-let data = {
-    "Scenario_name" : obj.scenario_name,
-    "Location_name" : obj.location_name,
-    "degree" : obj.degree,
-    "Sign_1" : obj.sign_1,
-    "Crowd_1" : obj.crowd_1
-}
+ 
 
 let Keywords = [
-    "Sign",
-    "Crowd"
+    "signs",
+    "crowds",
+    "distances"
 ]
 
 
+//TODO: ADD OVERLAYS TO THE DATABASE
+
+const overlays = {
+    "signs" : [
+        {
+            "name": "stop",
+            "id" : 87
+        },
+        {
+            "name": "go",
+            "id" : 88,
+        }
+    ],
+    "crowds": [
+        {
+            "name": 1,
+            "id" : 93,
+        },
+        {
+            "name": 2,
+            "id": 95
+        }
+    ]
+}
+
+
 //Does the scenario already exist? If not create scenario with the given Name 
-let ScenarioArray = await Get_scenarios();
-let Currentscenario = await ScenarioArray.find(scenario => scenario.name === data.Scenario_name);
+const ScenarioArray = await Get_scenarios();
+let Currentscenario = await ScenarioArray.find(scenario => scenario.name === data.scenario_name);
 
 if (Currentscenario) {
-    console.log(`Scenario with name ${data.Scenario_name} found:`, Currentscenario);
+    console.log(`Scenario with name ${data.scenario_name} found:`, Currentscenario);
 } else {
-    console.log(`Scenario with name ${data.Scenario_name} not found.`);
-    let scenariodata =JSON.stringify({"name" : data.Scenario_name,"description" : ""});
+    console.log(`Scenario with name ${data.scenario_name} not found.`);
+    let scenariodata =JSON.stringify({"name" : data.scenario_name,"description" : ""});
     Currentscenario = await Create_scenario(scenariodata);
-    console.log(`Scenario with name ${data.Scenario_name} created.`, Currentscenario);
+    console.log(`Scenario with name ${data.scenario_name} created.`, Currentscenario);
 }
     
 
 //Does the location already exist at the given scenario? If not create location with the given Name and relate it to the scenario
 
-let LocationArray = await Get_locations_by_scenario(Currentscenario.scenario_id);
-let Currentlocation = LocationArray.find(location => location.name === data.Location_name);
+const LocationArray = await Get_locations_by_scenario(Currentscenario.scenario_id);
+let Currentlocation = LocationArray.find(location => location.name === data.location_name);
 
 if(Currentlocation){
-    console.log(`Location with name ${data.Location_name} found`, Currentlocation);
+    console.log(`Location with name ${data.location_name} found`, Currentlocation);
 } else {
-    console.log(`Location with name ${data.Location_name} not found in Scenario ${data.Scenario_name}.`);
-    let locationdata = JSON.stringify({"name" : data.Location_name, "description" : "", "lat": "51.96712176326085", "lng" : "7.601288886457439" , "location_type" : ""});
+    console.log(`Location with name ${data.location_name} not found in Scenario ${data.scenario_name}.`);
+    const locationdata = JSON.stringify({"name" : data.location_name, "description" : "", "lat": "51.96712176326085", "lng" : "7.601288886457439" , "location_type" : ""});
     Currentlocation = await Create_location(locationdata);
     await Location_belongs_to_scenario(JSON.stringify({
         "scenario_id": Currentscenario.scenario_id, 
         "location_id": Currentlocation.location_id
         }));
-    console.log(`Location with name ${data.Location_name} created and related to ${data.Scenario_name}`, Currentlocation);
+    console.log(`Location with name ${data.location_name} created and related to ${data.scenario_name}`, Currentlocation);
 }
 
 
-//Choose video depending on degree of the intersection (anything else?) TODO: Add random selection
-if(data.degree == 2){
-    //choose random video with 2 exits
-     videoId = 86;
-}else if(data.degree == 3){
-    //choose random video with 3 exits and get its (IVE) Id 
-    videoId = 4;
-}  
-//assign the video_id of the chosen video to the Originvideo variable, create new instance with same URL called Currentvideo and relate it to scenario and location
-var Originvideo = videos.find(video => video.id === videoId);
-if (!Originvideo) {
-console.error(`Video with id ${videoId} not found.`);
-return;
+//Choose a random video of correct degree create an IVE instance of it and connect it to location and scenario
+
+const IDs =  (await Footage.find({degree: data.degree}).select('_id')).map(footage => footage._id.toString())
+if(IDs.length === 0){
+    throw new Error(`No footage found with degree ${data.degree}`)
 }
-var viddata = JSON.stringify({
-    "name": `${Originvideo.name}_clone`,
-    "description": `a ${data.degree} way junction using the ${Originvideo.name} video`,
-    "url": Originvideo.URL,
-    "recorded": null
-    }); 
-var Currentvideo = await Create_video(viddata);
-let vidlocation =  await Recorded_at(JSON.stringify({
+const ID = IDs[Math.floor(Math.random()*IDs.length)]
+const video = await Footage.findById(ID)
+
+
+
+const videoinstance = await Create_video(
+    JSON.stringify({
+        "name": `${video.name}_clone`,
+        "description": `a ${video.degree} way junction using the ${video.name} video`,
+        "url": video.video,
+        "recorded": null
+        })
+)
+
+await Recorded_at(JSON.stringify({
     "location_id": Currentlocation.location_id,
-    "video_id": Currentvideo.video_id,
+    "video_id": videoinstance.video_id,
     "description": "",
     "preferred": "yes"
     }));
-let vidscenario = await Video_belongs_to_scenario(JSON.stringify({
+
+await Video_belongs_to_scenario(JSON.stringify({
     "scenario_id" : Currentscenario.scenario_id,
-    "video_id": Currentvideo.video_id
+    "video_id": videoinstance.video_id
     }));
-    
-console.log(`Video created and put into ${data.Location_name} Location and Scenario ${data.Scenario_name}.`, Currentvideo )
-     
 
-//Now choose overlays for every possible path
-let Anchorpoint, AnchorpointID, Anchorpoint_looper, AnchorpointData, embedding_details, exit;
-for(let i =1; i <= data.degree; i++){
-    
+console.log(`Video created and put into Location ${data.location_name} and Scenario ${data.scenario_name}.`, videoinstance )
 
-    //get info about Exit from videodata.js for now 
-    exit = `Exit ${i}`;
-    let exitData = Originvideo.exits.find(exitData => exitData.name === exit);
-    if (!exitData) {
-    console.error(`Exit ${exit} not found in video with id ${videoId}.`);
-    return;
-    }
 
-    
-    for(let j = 0; j < Keywords.length; j++){
-        Anchorpoint = Keywords[j];
-        Anchorpoint_looper = `${Anchorpoint}_${i}`;
-        
-        //Ids of overlays TODO: Maybe incorporate this into the videodata?
-        if(data[Anchorpoint_looper] == "Stop"){
-            AnchorpointID = 87;
-        }else if( data[Anchorpoint_looper] == "Go"){
-            AnchorpointID = 88;
-        }else if( data[Anchorpoint_looper] == 1){
-            AnchorpointID = 93;
-        }else if( data[Anchorpoint_looper] == 2){
-            AnchorpointID = 95;
-        }else{
-            continue;
-        }
-        
-        //get info about Anchorpoint from videodata.js for now 
-        AnchorpointData = exitData.Anchorpoints.find(AnchorpointData => AnchorpointData.name === Anchorpoint);
-        if (!AnchorpointData) {
-        console.error(`Anchorpoint ${Anchorpoint} not found in exit ${exit} of video with id ${videoId}.`);
-        return;
-        }
-        
-        embedding_details = JSON.stringify({
-            "overlay_id": AnchorpointID,
-            "video_id": Currentvideo.video_id,
-            "x": AnchorpointData.x,
-            "y": AnchorpointData.y,
-            "z": AnchorpointData.z,
+//ADD OVERLAYS
+//TODO: handle faulty requests that cause errors somewhere. Some probably already in the Scene model
+let direction, anchorpoint;
+
+
+//Add Sign Overlays
+let signname, sign;
+for(let i = 0; i < data.degree; i++){
+    if(data.signs[i]){
+        direction = data.signs[i].direction;
+        signname = data.signs[i].sign;
+        anchorpoint = video.sign_overlays[direction - 1].screen_coordinate;
+        sign = overlays.signs.find(sign => sign.name === signname)
+        await Embedded_in(JSON.stringify(
+            {
+            "overlay_id": sign.id,
+            "video_id": videoinstance.video_id,
             "description": "test",
-            "rz": AnchorpointData.rz,
-            "rx": AnchorpointData.rx,
-            "ry": AnchorpointData.ry,
-            "h": AnchorpointData.h,
-            "w": AnchorpointData.w,
             "display": "true",
-            "d": "1"
-        });
-        await Embedded_in(embedding_details);
+            ...anchorpoint
+            }
+        ));
         await Overlay_belongs_to_scenario(JSON.stringify({
             "scenario_id" : Currentscenario.scenario_id,
-            "overlay_id": AnchorpointID
+            "overlay_id": sign.id
             }));
-        console.log(`Created ${data[Anchorpoint_looper]} ${Anchorpoint} at Exit ${i}`);
+        console.log(`Created ${signname} sign at direction ${direction}`);
     }
 }
+
+//Add crowd overlays
+let crowdname, crowd;
+for(let i = 0; i < data.degree; i++){
+    if(data.crowds[i] && data.crowds[i].crowdedness != 0){
+        crowdname = data.crowds[i].crowdedness;
+        direction = data.crowds[i].direction;
+        anchorpoint = video.crowd_overlays[direction - 1].screen_coordinate;
+        crowd = overlays.crowds.find(crowd => crowd.name === crowdname) 
+        await Embedded_in(JSON.stringify(
+            {
+            "overlay_id": crowd.id,
+            "video_id": videoinstance.video_id,
+            "description": "test",
+            "display": "true",
+            ...anchorpoint
+            }
+        ));
+        await Overlay_belongs_to_scenario(JSON.stringify({
+            "scenario_id" : Currentscenario.scenario_id,
+            "overlay_id": crowd.id
+            }));
+        console.log(`Created ${crowdname} crowd at direction ${direction}`);
+    }
+}
+
+
 
 
 }

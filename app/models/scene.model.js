@@ -31,7 +31,7 @@ module.exports = mongoose => {
             crowdedness: {
                 type: Number,
                 min: 0,
-                max: 1, // for now just allow 0 (no crowd) and 1 (crowd); change later if applicable
+                max: 2, // for now just allow 0 (no crowd) and 1 (crowd); change later if applicable
                 required: true
             }
         }],

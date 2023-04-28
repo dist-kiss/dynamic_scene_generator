@@ -31,6 +31,11 @@
                     <div class="crowds-container"></div>
                     <button type="button" class="add-crowd-btn">Add Crowd</button>
                     <br>
+                    <label>Distances:</label>
+                    <br>
+                    <div class="distances-container"></div>
+                    <button type="button" class="add-distance-btn">Add Distance</button>
+                    <br>
                     <input type="submit" value="Submit" id="submit" />
                 </form>
             </div>
@@ -96,6 +101,30 @@
           crowdDiv.appendChild(crowdSelect);
           crowdDiv.innerHTML += "<br>";
           crowdsContainer.appendChild(crowdDiv);
+        });
+
+         //Distance
+        const distancesContainer = document.querySelector(".distances-container");
+        const addDistanceBtn = document.querySelector(".add-distance-btn");
+        addDistanceBtn.addEventListener("click", () => {
+          const distanceDirectionSelect = document.createElement("select");
+          distanceDirectionSelect.name = "distancedirection";
+          for (let i = 0; i < directions.length; i++) {
+            const option = document.createElement("option");
+            option.value = directions[i];
+            option.text = directions[i];
+            distanceDirectionSelect.appendChild(option);
+          }
+          const distanceinput = document.createElement("input");
+          distanceinput.setAttribute("type", "text");
+          distanceinput.setAttribute("size", "1");
+          distanceinput.name = "distance";
+          
+          const distanceDiv = document.createElement("div");
+          distanceDiv.appendChild(distanceDirectionSelect);
+          distanceDiv.appendChild(document.createTextNode(" "));
+          distanceDiv.appendChild(distanceinput);
+          distancesContainer.appendChild(distanceDiv);
         });
        
 

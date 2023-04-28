@@ -13,8 +13,8 @@ const { schema_video } = require('./sampledata');
 const wrong_footage = {
     id: 71,
     name: "QB_08_dir_07_09",
-    // video: "/quakenbrueck/QB_8_dir_7_9",
-    degree: 4,
+    video: "/quakenbrueck/QB_8_dir_7_9",
+    degree: 2,
     distance_overlays: [
         {
             direction: 1,
@@ -57,14 +57,14 @@ const wrong_footage = {
 
 async function doPostRequest() {
 
-    let url = 'http://localhost:5000/api/footage';
+    let url = 'http://localhost:3000/api/footage';
 
     let res = await fetch(url, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(schema_video[0]),
+        body: JSON.stringify(wrong_footage) //schema_video[0]),
     });
 
     if (res.ok) {
@@ -80,7 +80,7 @@ async function doPostRequest() {
 }
 
 async function doGetRequest() {
-    let url = 'http://localhost:5000/api/footage';
+    let url = 'http://localhost:3000/api/footage';
     let res = await fetch(url);
 
     if (res.ok) {
@@ -95,7 +95,7 @@ async function doGetRequest() {
 
 // console.log(JSON.stringify(schema_video[0]));
 
-doPostRequest().then(data => {
+doGetRequest().then(data => {
     console.log(data);
 });
 

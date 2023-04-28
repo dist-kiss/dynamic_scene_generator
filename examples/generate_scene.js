@@ -4,7 +4,7 @@ wrong_scene = {
     id: 456,
     scenario_name: "test_scene_3",
     location_name: 'test_location_3',
-    degree: 3,
+    degree: 2,
     signs: [
       {
         direction: 1,
@@ -12,11 +12,11 @@ wrong_scene = {
       },
       {
         direction: 2,
-        sign: 'going'
+        sign: 'go'
       },
       {
         direction: 3,
-        sign: ''
+        sign: 'go'
       }
     ],
     crowds: [

@@ -1,4 +1,5 @@
 const express = require("express");
+require("dotenv").config();
 // const cors = require("cors");
 
 const app = express();
@@ -29,7 +30,7 @@ require("./app/routes/footage.routes")(app);
 require("./app/routes/scene.routes")(app);
 
 // set port, listen for requests
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.NODE_DOCKER_PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });

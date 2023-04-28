@@ -9,11 +9,13 @@ const { Get_locations_by_scenario } = require('./Connect_to_IVE_API/Locations/Ge
 const { Create_scenario } = require('./Connect_to_IVE_API/Scenarios/Create_scenario');
 const {Get_scenarios} = require('./Connect_to_IVE_API/Scenarios/Get_scenarios');
 const { Create_video } = require('./Connect_to_IVE_API/Videos/Create_video');
+const { Create_overlay } = require('./Connect_to_IVE_API/Overlays/Create_overlay');
 const { Embedded_in } = require('./Connect_to_IVE_API/Relationships/Embedded_in');
 const { Recorded_at } = require('./Connect_to_IVE_API/Relationships/Recorded_at');
 const { Location_belongs_to_scenario } = require('./Connect_to_IVE_API/Relationships/Location_belongs_to_scenario');
 const { Video_belongs_to_scenario } = require('./Connect_to_IVE_API/Relationships/Video_belongs_to_scenario');
 const { Overlay_belongs_to_scenario } = require('./Connect_to_IVE_API/Relationships/Overlay_belongs_to_scenario');
+
 
 
 // obj is the data object that will come from the model
@@ -177,9 +179,42 @@ for(let i = 0; i < data.degree; i++){
     }
 }
 
-
+//Add Distance Overlays
+let distance_id;
+for(let i = 0; i < data.degree; i++){
+    if(data.distances[i]){
+        direction = data.distances[i].direction;        
+        anchorpoint = video.distance_overlays[direction - 1].screen_coordinate;
+        distance = data.distances[i].distance;
+        distance_id = await Create_overlay(JSON.stringify(
+            {
+                "name": "generated distance",
+                "description": "Test",
+                "category": "distance",
+                "url": "",
+                "title":"",
+                "distance_meters": distance,
+                "distance_seconds": 1.42*distance
+              }
+        ));
+        await Embedded_in(JSON.stringify(
+            {
+            "overlay_id": distance_id,
+            "video_id": videoinstance.video_id,
+            "description": "test",
+            "display": "true",
+            ...anchorpoint
+            }
+        ));
+        await Overlay_belongs_to_scenario(JSON.stringify({
+            "scenario_id" : Currentscenario.scenario_id,
+            "overlay_id": distance_id
+            }));
+        console.log(`Created ${distance} distance at direction ${direction}`);
+    }
+}
 
 
 }
-  
+
 module.exports = { generate };

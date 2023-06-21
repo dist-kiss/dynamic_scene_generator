@@ -36,11 +36,11 @@ const overlays = {
     "signs" : [
         {
             "name": "stop",
-            "id" : 87
+            "id" : 731  // //87
         },
         {
             "name": "go",
-            "id" : 88,
+            "id" : 765,  // //88
         }
     ],
     "crowds": [

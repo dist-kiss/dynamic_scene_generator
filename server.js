@@ -38,21 +38,28 @@ signs = new Array();
       "direction" : req.body.signdirection[i], "sign": req.body.sign[i]
     })
   } 
-  crowds = new Array();
-  for (let i = 0; i < req.body.crowd.length; i++) {
-    crowds.push({
-      "direction" : req.body.crowddirection[i], "crowdedness": req.body.crowd[i]
-    })
-  } 
-  const scene = new Scene({
-    scenario_name: req.body.scenario_name,
-    location_name: req.body.location_name,
-    degree: req.body.degree,
-    signs: signs,
-    crowds: crowds,
-    distances: req.body.distances
+crowds = new Array();
+for (let i = 0; i < req.body.crowd.length; i++) {
+  crowds.push({
+    "direction" : req.body.crowddirection[i], "crowdedness": req.body.crowd[i]
   })
-
+}
+distances = new Array();
+for (let i = 0; i < req.body.distance.length; i++) {
+  distances.push({
+    "direction" : req.body.distancedirection[i], "distance": req.body.distance[i]
+  })
+}
+const scene = new Scene({
+  scenario_name: req.body.scenario_name,
+  location_name: req.body.location_name,
+  degree: req.body.degree,
+  signs: signs,
+  crowds: crowds,
+  distances: distances
+})
+const { generate } = require('./generator');
+generate(scene);
 
 
 

@@ -21,7 +21,7 @@ exports.create = async (req, res) => {
   })
 
   // Generate IVE request for Scene
-  //  await generate(scene);
+  await generate(scene);
 
 
   // Save scene in the database

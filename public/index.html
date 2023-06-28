@@ -1,25 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Scene</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" 
-    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
+
 <body>
+    <script src="./javascript/index.js" defer></script>
     <div class="container">
         <div class="row">
             <div class="col-md-3"></div>
             <div class="col-md-6 main">
-                <form action="/createscene" method="POST" onsubmit="getSigns()">
+                <form action="/createscene" method="POST">
                     <h2>Scene Creator</h2>
-                    <input type="text" class="box" id="scenario_name" name="scenario_name" placeholder="scenario_name" required />
+                    <input type="text" class="box" Id="scenario_name" name="scenario_name" placeholder="scenario_name"
+                        required />
                     <br>
-                    <input type="text" class="box" id="location_name" name="location_name" placeholder="location_name" required />
+                    <input type="text" class="box" Id="location_name" name="location_name" placeholder="location_name"
+                        required />
                     <br>
-                    <input type="number" class="box" id="degree" name="degree" min="1" max="3" placeholder="degree" required />
+                    <input type="number" class="box" Id="degree" name="degree" min="1" max="3" placeholder="degree"
+                        required />
                     <br>
                     <label>Signs:</label>
                     <br>
@@ -36,101 +42,15 @@
                     <div class="distances-container"></div>
                     <button type="button" class="add-distance-btn">Add Distance</button>
                     <br>
-                    <input type="submit" value="Submit" id="submit" />
+                    <button type="button" onclick="add_new_scene()">Submit</button>
                 </form>
             </div>
             <div class="col-md-3"></div>
         </div>
     </div>
-    <script>
-        //signs
-        const signsContainer = document.querySelector(".signs-container");
-        const addSignBtn = document.querySelector(".add-sign-btn");
-        const directions = [1, 2, 3];
-        const signs = ["stop", "go"];
-        addSignBtn.addEventListener("click", () => {          
-          const signDirectionSelect = document.createElement("select");
-          signDirectionSelect.name = "signdirection";
-          for (let i = 0; i < directions.length; i++) {
-            const option = document.createElement("option");
-            option.value = directions[i];
-            option.text = directions[i];
-            signDirectionSelect.appendChild(option);
-          }
-          const signSelect = document.createElement("select");
-          signSelect.name = "sign";
-          for (let i = 0; i < signs.length; i++) {
-            const option = document.createElement("option");
-            option.value = signs[i];
-            option.text = signs[i];
-            signSelect.appendChild(option);
-          }
-          const signDiv = document.createElement("div");
-          signDiv.appendChild(signDirectionSelect);
-          signDiv.appendChild(document.createTextNode(" "));
-          signDiv.appendChild(signSelect);
-          signDiv.innerHTML += "<br>";
-          signsContainer.appendChild(signDiv);
-        });     
-        
-        //crowds
-       const crowdsContainer = document.querySelector(".crowds-container");
-        const addcrowdBtn = document.querySelector(".add-crowd-btn");
-        
-        const crowds = ["empty", "slightly crowded", "very crowded"];
-        addcrowdBtn.addEventListener("click", () => {
-          const crowdDirectionSelect = document.createElement("select");
-          crowdDirectionSelect.name = "crowddirection";
-          for (let i = 0; i < directions.length; i++) {
-            const option = document.createElement("option");
-            option.value = directions[i];
-            option.text = directions[i];
-            crowdDirectionSelect.appendChild(option);
-          }
-          const crowdSelect = document.createElement("select");
-          crowdSelect.name = "crowd";
-          for (let i = 0; i < crowds.length; i++) {
-            const option = document.createElement("option");
-            option.value = i;
-            option.text = crowds[i];
-            crowdSelect.appendChild(option);
-          }
-          const crowdDiv = document.createElement("div");
-          crowdDiv.appendChild(crowdDirectionSelect);
-          crowdDiv.appendChild(document.createTextNode(" "));
-          crowdDiv.appendChild(crowdSelect);
-          crowdDiv.innerHTML += "<br>";
-          crowdsContainer.appendChild(crowdDiv);
-        });
-
-         //Distance
-        const distancesContainer = document.querySelector(".distances-container");
-        const addDistanceBtn = document.querySelector(".add-distance-btn");
-        addDistanceBtn.addEventListener("click", () => {
-          const distanceDirectionSelect = document.createElement("select");
-          distanceDirectionSelect.name = "distancedirection";
-          for (let i = 0; i < directions.length; i++) {
-            const option = document.createElement("option");
-            option.value = directions[i];
-            option.text = directions[i];
-            distanceDirectionSelect.appendChild(option);
-          }
-          const distanceinput = document.createElement("input");
-          distanceinput.setAttribute("type", "text");
-          distanceinput.setAttribute("size", "1");
-          distanceinput.name = "distance";
-          
-          const distanceDiv = document.createElement("div");
-          distanceDiv.appendChild(distanceDirectionSelect);
-          distanceDiv.appendChild(document.createTextNode(" "));
-          distanceDiv.appendChild(distanceinput);
-          distancesContainer.appendChild(distanceDiv);
-        });
-       
 
 
-      </script>
-      
-      
+
 </body>
+
 </html>
